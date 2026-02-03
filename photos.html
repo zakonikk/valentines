@@ -352,17 +352,27 @@
     }
 
     function sharePhoto() {
-        const title = document.getElementById('photoTitle').textContent;
-        const text = `Посмотри, какая красивая фотография: "${title}" 💖`;
+        const urlParams = new URLSearchParams(window.location.search);
+        const photoId = urlParams.get('photo') || 'photo1';
+        
+        // Уникальные сообщения для каждой фотки
+        const shareMessages = {
+            photo1: 'https://zakonikk.github.io/try2/photos.html?photo=photo1',
+            photo2: 'https://zakonikk.github.io/try2/photos.html?photo=photo2',
+            photo3: 'https://zakonikk.github.io/try2/photos.html?photo=photocab',
+            photo4: 'https://zakonikk.github.io/try2/photos.html?photo=photo4'
+        };
+        
+        const shareText = shareMessages[photoId] || 'Посмотри на эту чудесную фотографию! 💕';
         
         if (navigator.share) {
             navigator.share({
                 title: 'Наша фотография',
-                text: text,
+                text: shareText,
             }).catch(err => console.log('Error sharing:', err));
         } else {
-            alert(text + '\n\nСкопировано в буфер обмена!');
-            navigator.clipboard.writeText(text);
+            alert(shareText + '\n\nСкопировано в буфер обмена!');
+            navigator.clipboard.writeText(shareText);
         }
     }
 </script>
