@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наша фотография 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffe4f0 0%, #fff0f7 50%, #ffebf5 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sticker {
+            position: fixed;
+            pointer-events: none;
+            font-size: 2.5rem;
+            opacity: 0.5;
+            animation: float 8s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .sticker:nth-child(1) { top: 5%; left: 3%; animation-delay: 0s; }
+        .sticker:nth-child(2) { bottom: 15%; right: 4%; animation-delay: 1s; }
+        .sticker:nth-child(3) { top: 30%; right: 3%; animation-delay: 2s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(3deg); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 20, 147, 0.3);
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(255, 20, 147, 0.5);
+        }
+
+        .frame-wrapper {
+            perspective: 1200px;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .frame-outer {
+            background: linear-gradient(135deg, #ffb6d9, #ffc0e0);
+            padding: 12px;
+            border-radius: 40px;
+            box-shadow: 0 30px 60px rgba(200, 100, 150, 0.3);
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .frame-outer:hover {
+            transform: rotateX(-10deg) rotateY(5deg) translateZ(30px);
+            box-shadow: 0 40px 80px rgba(200, 100, 150, 0.5);
+        }
+
+        .frame-inner {
+            background: linear-gradient(135deg, #fffbf7, #fff5f0);
+            border-radius: 35px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .photo-container {
+            width: 100%;
+            height: auto;
+            background: linear-gradient(135deg, #ffebf0, #f0e5f5);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) inset;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-placeholder img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .photo-title {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            color: #ff1493;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .photo-description {
+            font-size: 1.1rem;
+            color: #666;
+            text-align: center;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .photo-date {
+            background: linear-gradient(135deg, rgba(255, 182, 217, 0.4), rgba(255, 192, 224, 0.4));
+            padding: 15px 20px;
+            border-radius: 20px;
+            border-left: 4px solid #ff69b4;
+            font-size: 1rem;
+            color: #ff1493;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 105, 180, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #ff69b4;
+            border: 2px solid #ff69b4;
+        }
+
+        .btn-secondary:hover {
+            background: #fff5f7;
+            transform: scale(1.08) translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .photo-title {
+                font-size: 1.8rem;
+            }
+
+            .frame-outer:hover {
+                transform: rotateX(-5deg) rotateY(3deg) translateZ(15px);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .sticker {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Stickers -->
+<div class="sticker">🌸</div>
+<div class="sticker">✨</div>
+<div class="sticker">💕</div>
+
+<div class="container">
+    <button class="back-btn" onclick="goBack()">
+        ← Вернуться назад
+    </button>
+
+    <div class="frame-wrapper">
+        <div class="frame-outer">
+            <div class="frame-inner">
+                <div class="photo-container">
+                    <div class="photo-placeholder" id="photoEmoji"></div>
+                </div>
+
+                <div style="text-align: center;">
+                    <h1 class="photo-title" id="photoTitle">Наш первый поцелуй</h1>
+                    <p class="photo-description" id="photoDescription">
+                        Этот момент навсегда запечатлён в моём сердце.
+                    </p>
+                    <div class="photo-date" id="photoDate">
+                        Дата: 14 февраля
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="likePhoto()">
+                        💕 Люблю эту фотографию!
+                    </button>
+                    <button class="btn btn-secondary" onclick="sharePhoto()">
+                        📤 Поделиться
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const photoData = {
+        photo1: {
+            emoji: '💋',
+            image: 'images/photo1.jpg',
+            title: 'Наш поцелуй',
+            description: 'Этот волшебный момент, когда наши губы встретились. Мое сердце билось так быстро, а весь мир вокруг растаял. Это было самое прекрасное чувство в мире.',
+            date: '27 сентября 2025'
+        },
+        photo2: {
+            emoji: '✨',
+            image: 'images/photo2.jpg',
+            title: 'За двя дня до...',
+            description: 'Мы сидели на зеленом театре, и ты выглядела настолько красиво, что солнце позавидовало. Твои волосы развевались на ветру, а глаза светились счастьем. Этот момент — вечность для меня.',
+            date: '23 сентября 2025'
+        },
+        photo3: {
+            emoji: '📷',
+            image: 'images/photocab.jpg',
+            title: 'Фотобудка',
+            description: 'Помню, как мы хотели сфоткатся в фотобудке, и мы это сделали! Эти снимки навсегда останутся в моей памяти, как символ нашей радости и веселья вместе. Теперь я могу каждый день смотреть на эти фото и любоваться тобой.',
+            date: '24 ноября 2025'
+        },
+        photo4: {
+            emoji: '💕',
+            image: 'images/photo4.jpg',
+            title: 'Просто так',
+            description: 'Это была обычный день, но когда ты рядом, каждый день становится особенным. Твоё присутствие, твой смех, твоя любовь делают мою жизнь чудесной.',
+            date: 'Каждый день с тобой'
+        },
+        photo5: {
+            emoji: '❄️',
+            image: 'images/photo5.jpg',
+            title: 'Зимний день',
+            description: 'Снег падал на нас, а мы были просто вместе. Мне не важно, где мы и какая погода — рядом с тобой всё становится тёплым и светлым.',
+            date: 'Зима 2025'
+        },
+        photo6: {
+            emoji: '💝',
+            image: 'images/photo6.jpg',
+            title: 'Мы с тобой',
+            description: 'Любой момент рядом с тобой — это лучший момент. Твоя улыбка, твоё тепло, твоё присутствие — это всё, что мне нужно в этом мире.',
+            date: 'Каждый день'
+        }
+    };
+
+    window.addEventListener('load', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const photoId = urlParams.get('photo') || 'photo1';
+        const data = photoData[photoId];
+
+        if (data) {
+            const photoElement = document.getElementById('photoEmoji');
+            
+            if (data.image) {
+                const img = document.createElement('img');
+                img.src = data.image;
+                img.alt = data.title;
+                photoElement.innerHTML = '';
+                photoElement.appendChild(img);
+            }
+            
+            document.getElementById('photoTitle').textContent = data.title;
+            document.getElementById('photoDescription').textContent = data.description;
+            document.getElementById('photoDate').textContent = 'Дата: ' + data.date;
+        }
+    });
+
+    function goBack() {
+        window.history.back();
+    }
+
+    function likePhoto() {
+        const btn = event.target;
+        btn.textContent = '💕 Поставила лайк!';
+        btn.disabled = true;
+        setTimeout(() => {
+            btn.textContent = '💕 Люблю эту фотографию!';
+            btn.disabled = false;
+        }, 2000);
+    }
+
+    function sharePhoto() {
+        const title = document.getElementById('photoTitle').textContent;
+        const text = `Посмотри, какая красивая фотография: "${title}" 💖`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'Наша фотография',
+                text: text,
+            }).catch(err => console.log('Error sharing:', err));
+        } else {
+            alert(text + '\n\nСкопировано в буфер обмена!');
+            navigator.clipboard.writeText(text);
+        }
+    }
+</script>
+
+</body>
+</html>
